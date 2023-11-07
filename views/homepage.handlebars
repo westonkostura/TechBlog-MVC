@@ -1,0 +1,9 @@
+<div class="container">
+    <h2>All Posts</h2>
+    {{#each posts}}
+    <div class="post">
+        <h3>{{this.title}}</h3>
+        <p>{{this.content}}</p>
+    </div>
+    {{/each}}
+</div>
