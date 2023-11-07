@@ -55,4 +55,8 @@ router.get('/post/:id', withAuth, async (req, res) => {
     }
 });
 
+// router.get('/dashboard', withAuth, async (req, res) => {
+// });
+
+
 module.exports = router;

@@ -1,0 +1,23 @@
+<div class="container">
+    <h2>Your Dashboard</h2>
+    {{#if logged_in}}
+        <h3>Create a new post</h3>
+        <form action="/posts" method="post">
+            <label for="title">Title:</label>
+            <input id="title" name="title" required>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content" required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
+        <h3>Your Posts</h3>
+        {{#each posts}}
+        <div class="post">
+            <h3>{{this.title}}</h3>
+            <p>{{this.content}}</p>
+        </div>
+        {{/each}}
+    {{else}}
+        <p>You need to be logged in to see your posts.</p>
+    {{/if}}
+</div>

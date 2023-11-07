@@ -2,4 +2,13 @@
     <h2>{{post.title}}</h2>
     <p>{{post.content}}</p>
     <p>Posted by: {{post.author}}</p>
+
+    {{#if logged_in}}
+    <h3>Add a comment</h3>
+    <form action="/posts/{{post.id}}/comments" method="post">
+        <label for="comment">Comment:</label>
+        <textarea id="comment" name="comment" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+    {{/if}}
 </div>
