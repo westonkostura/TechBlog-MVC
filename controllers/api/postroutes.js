@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Post = require('../models/Post');
-const User = require('../models/User');
+const { Post } = require('../../models');
+const withAuth = require('../../utils/auth');
 
 // Create a new post
-router.post('/', async (req, res) => {
+router.post('/', withAuth, async (req, res) => {
     try {
         const newPost = await Post.create({
             title: req.body.title,
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 });
 
 //delete a post
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', withAuth, async (req, res) => {
     try {
         const post = await Post.findByPk(req.params.id);
         if (post.userId === req.session.user.id) {
@@ -31,7 +31,5 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
-
 
 module.exports = router;
