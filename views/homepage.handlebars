@@ -1,9 +1,12 @@
 <div class="container">
     <h2>All Posts</h2>
     {{#each posts}}
-    <div class="post">
-        <h3>{{this.title}}</h3>
-        <p>{{this.content}}</p>
+    <div class="post-card">
+        <a href="/post/{{this.id}}">
+            <h3>{{this.title}}</h3>
+            <p>By: {{this.User.name}}</p>
+            <p>{{this.content}}</p>
+        </a>
     </div>
     {{/each}}
 </div>

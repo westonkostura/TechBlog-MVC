@@ -1,12 +1,16 @@
 {
     "users": [
         {
-            "username": "user1",
-            "password": "password1"
+            "name": "User Five5",
+            "username": "user55",
+            "email": "user55@example.com",
+            "password": "password55"
         },
         {
-            "username": "user2",
-            "password": "password2"
+            "name": "User Six6",
+            "username": "user66",
+            "email": "user66@example.com",
+            "password": "password66"
         }
     ],
     "posts": [
@@ -23,11 +27,13 @@
     ],
     "comments": [
         {
+            "id": 1,
             "content": "This is the first comment",
             "userId": 1,
             "postId": 1
         },
         {
+            "id": 2,
             "content": "This is the second comment",
             "userId": 2,
             "postId": 1
