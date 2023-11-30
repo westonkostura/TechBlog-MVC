@@ -1,42 +1,38 @@
 {
     "users": [
         {
-            "name": "User Five5",
-            "username": "user55",
-            "email": "user55@example.com",
-            "password": "password55"
+            "id": 1,
+            "name": "userOne",
+            "password": "password"
         },
         {
-            "name": "User Six6",
-            "username": "user66",
-            "email": "user66@example.com",
-            "password": "password66"
+            "id": 2,
+            "name": "userTwo",
+            "password": "password1"
         }
     ],
     "posts": [
         {
             "title": "Post 1",
             "content": "This is the first post",
-            "userId": 1
+            "user_id": 1,
+            "id": 1
+
         },
         {
             "title": "Post 2",
             "content": "This is the second post",
-            "userId": 2
+            "user_id": 2,
+            "id": 2
+
         }
     ],
     "comments": [
         {
             "id": 1,
-            "content": "This is the first comment",
-            "userId": 1,
-            "postId": 1
-        },
-        {
-            "id": 2,
-            "content": "This is the second comment",
-            "userId": 2,
-            "postId": 1
+            "text": "This is the first comment",
+            "user_id": 2,
+            "post_id": 1
         }
     ]
 }

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Post, User, Comment } = require('../models');
+const { Post, User, Comment } = require('../models/index');
 const withAuth = require('../utils/auth');
 
 router.get('/', async (req, res) => {
@@ -14,7 +14,6 @@ router.get('/', async (req, res) => {
         });
 
         const posts = postData.map((post) => post.get({ plain: true }));
-
         res.render('homepage', { 
             posts, 
             logged_in: req.session.logged_in 
@@ -39,30 +38,14 @@ router.get('/post/:id', async (req, res) => {
             where: {
                 id: req.params.id,
             },
-            attributes: ['id', 'title', 'content'],
             include: [
                 {
                     model: User,
                     attributes: ['name'],
                 },
-                {
-                    model: Comment,
-                    attributes: ['id', 'text'],
-                    include: [
-                        {
-                            model: User,
-                            attributes: ['name'],
-                        },
-                    ],
-                },
             ],
         });
-
-        if (!postData) {
-            res.status(404).json({ message: 'No post found with this id' });
-            return;
-        }
-
+        console.log(postData);
         const post = postData.get({ plain: true });
 
         res.render('post', { 
@@ -74,8 +57,31 @@ router.get('/post/:id', async (req, res) => {
     }
 });
 
-// router.get('/dashboard', withAuth, async (req, res) => {
-// });
+
+router.get('/dashboard', async (req, res) => {
+    try {
+        if (req.session.logged_in) {
+            const posts = await Post.findAll({
+                where: {
+                    userId: req.session.user_id,
+                },
+            });
+
+            res.render('dashboard', {
+                posts,
+                logged_in: true
+            });
+        } else {
+            res.render('dashboard', {
+                logged_in: false
+            });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+
 
 
 module.exports = router;

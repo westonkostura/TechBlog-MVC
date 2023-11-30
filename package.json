@@ -5,9 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "seed": "node seed/seedData.js"
-
+    "start": "nodemon server.js",
+    "seed": "node seed/cleanDb.js && node seed/seedData.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +18,7 @@
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
     "mysql2": "^3.6.3",
+    "nodemon": "^3.0.1",
     "sequelize": "^6.34.0"
   }
 }

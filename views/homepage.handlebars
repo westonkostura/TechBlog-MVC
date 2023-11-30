@@ -1,11 +1,11 @@
 <div class="container">
-    <h2>All Posts</h2>
+    <h2 class="all-posts-header">All Posts</h2>
     {{#each posts}}
     <div class="post-card">
         <a href="/post/{{this.id}}">
-            <h3>{{this.title}}</h3>
-            <p>By: {{this.User.name}}</p>
-            <p>{{this.content}}</p>
+            <h3 class="post-title">{{this.title}}</h3>
+            <p class="post-user">Posted By: {{this.user.name}}</p>
+            <p class="post-content">{{this.content}}</p>
         </a>
     </div>
     {{/each}}

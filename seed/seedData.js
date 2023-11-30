@@ -1,15 +1,30 @@
-const fs = require('fs');
-const path = require('path');
+const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
-
-const seedData = JSON.parse(fs.readFileSync(path.join(__dirname, 'seedData.json'), 'utf8'));
+const seedData = require('./seedData.json');
 
 const seedDatabase = async () => {
-    console.log(seedData.comments)
-    // await User.bulkCreate(seedData.users);
-    // await Post.bulkCreate(seedData.posts);
-    await Comment.bulkCreate(seedData.comments);
-    console.log("Seeding complete!");
+    await sequelize.sync({ force: true });
+
+    const users = await User.bulkCreate(seedData.users, {
+        individualHooks: true,
+        returning: true,
+    });
+
+    const posts = await Post.bulkCreate(seedData.posts.map(post => ({
+        ...post,
+        user_id: users.find(user => user.id === post.user_id).id,
+    })), {
+        returning: true,
+    });
+
+    for (const comment of seedData.comments) {
+        await Comment.create({
+            ...comment,
+            user_id: users.find(user => user.id === comment.user_id).id,
+            post_id: posts.find(post => post.id === comment.post_id).id,
+        });
+    }
+    console.log('Database seeded!')
     process.exit(0);
 };
 

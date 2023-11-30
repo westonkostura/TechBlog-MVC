@@ -1,35 +1,41 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const bcrypt = require('bcrypt');
 const { User } = require('../../models');
 
-// User registration
 router.post('/signup', async (req, res) => {
     try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const newUser = await User.create({
-            username: req.body.username,
-            password: hashedPassword
+        const newUser = await User.create(req.body);
+        req.session.save(() => {
+            req.session.user_id = newUser.id;
+            req.session.logged_in = true;
+            res.status(200).json(newUser);
         });
-        req.session.user = newUser;
-        res.status(201).json(newUser);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    } catch (err) {
+        res.status(400).json(err);
     }
 });
 
-// User login
 router.post('/login', async (req, res) => {
     try {
-        const user = await User.findOne({ where: { username: req.body.username } });
-        if (user && await bcrypt.compare(req.body.password, user.password)) {
-            req.session.user = user;
-            res.json(user);
-        } else {
-            res.status(401).json({ message: 'Invalid username or password' });
+        const user = await User.findOne({ where: { name: req.body.name } });
+        if (!user) {
+            res.status(400).json({ message: 'No user account found!' });
+            return;
         }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+
+        const validPassword = user.checkPassword(req.body.password);
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect password!' });
+            return;
+        }
+
+        req.session.save(() => {
+            req.session.user_id = user.id;
+            req.session.logged_in = true;
+            res.json({ user, message: 'You are now logged in!' });
+        });
+    } catch (err) {
+        res.status(400).json(err);
     }
 });
 
